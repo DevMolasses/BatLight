@@ -1,4 +1,4 @@
-void displayCase(uint8_t caseNum) {
+void displayCase() {
   //Off = 200
   //ButtonA uses 0 - 99
   //ButtonB uses 100-199

@@ -31,10 +31,14 @@ void readingLight() {
 }
 
 void strobeLight(uint32_t color) {
-  colorChange(color);
-  delay(70);
-  colorChange(strip.OFF);
-  delay(30);
+  unsigned long curMillis = millis();
+  if (curMillis - displayTimer > 70UL && curMillis - displayTimer <= 100UL) {
+    colorChange(color);
+  } else if (millis() - displayTimer > 100UL)
+  {
+    colorChange(strip.OFF);
+    displayTimer = millis();
+  }
 }
 
 /*
@@ -43,14 +47,12 @@ void strobeLight(uint32_t color) {
 * Credit to Adafruit.com for the algorithm; edited by DevMolasses
 */
 void rainbow(uint8_t wait) {
-  uint16_t i, j;
-  for (j = 0; j < 360; j++) {
-    for (i = 0; i < strip.numPixels(); i++) {
-      //this bitwise & operator won't work with 359, only 255 or 511
-      strip.setPixelColor(i, strip.Wheel(((i + j) & 359), 1, 1));
+  if (millis() - displayTimer > displayTimerLength) {
+    if (index >= 360) index = 0;
+    for (uint16_t i = 0; i < strip.numPixels(); i++) {
+      strip.setPixelColor(i, strip.Wheel(((i + index) % 360), 1, 1));
     }
     strip.show();
-    delay(wait);
   }
 }
 

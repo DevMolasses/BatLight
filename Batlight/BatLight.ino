@@ -19,7 +19,12 @@ DevMolasses_NeoPixel strip = DevMolasses_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GR
 
 bool oldState1 = HIGH;
 bool oldState2 = HIGH;
-int showType = 0;
+
+int caseNum = 200; //initially set to off
+
+//Thees variables are used for using the timer
+//which allows the code execution to return to loop()
+//to query the buttons
 unsigned long displayTimer;
 unsigned long displayTimerLength;
 uint16_t index = 0;
@@ -50,7 +55,7 @@ void loop() {
     newState1 = digitalRead(BUTTON1_PIN);
     newState2 = digitalRead(BUTTON2_PIN);
     if (newState1 == LOW && newState2 == LOW) {
-      //Turn the light off
+      caseNum=200;
     }
   }
   //Check if button 1 was pressed
@@ -58,7 +63,11 @@ void loop() {
     delay(20);//Debounce
     newState1 = digitalRead(BUTTON1_PIN);
     if (newState1 == LOW) {
-      //cycle through plain effects
+      if (caseNum >= 3) {
+        caseNum = 0;
+      } else {
+        caseNum++;
+      }
     }
   }
   //Check if button 2 was pressed
@@ -66,7 +75,12 @@ void loop() {
     delay(20);//Debounce
     newState2 = digitalRead(BUTTON2_PIN);
     if (newState2 == LOW) {
-      //cycle through special effects
+      if (caseNum < 100 || caseNum >= 107) {
+        caseNum = 100;
+      } else {
+        caseNum++;
+      }
     }
   }
+  displayCase();
 }
