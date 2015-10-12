@@ -5,11 +5,20 @@ void colorChange(uint32_t color) {
   strip.show();
 }
 
-void colorWipe(uint32_t color, uint8_t wait) {
-  for (uint16_t i = 0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, color);
+//void colorWipe(uint32_t color, uint8_t wait) {
+//  for (uint16_t i = 0; i < strip.numPixels(); i++) {
+//    strip.setPixelColor(i, color);
+//    strip.show();
+//    delay(wait);
+//  }
+//}
+
+void colorWipe(uint32_t color) {
+  if (millis() - displayTimer > displayTimerLength) {
+    if (index >= strip.numPixels()) index = 0;
+    strip.setPixelColor(index, color);
     strip.show();
-    delay(wait);
+    index++;
   }
 }
 
@@ -37,6 +46,7 @@ void rainbow(uint8_t wait) {
   uint16_t i, j;
   for (j = 0; j < 360; j++) {
     for (i = 0; i < strip.numPixels(); i++) {
+      //this bitwise & operator won't work with 359, only 255 or 511
       strip.setPixelColor(i, strip.Wheel(((i + j) & 359), 1, 1));
     }
     strip.show();
@@ -48,13 +58,22 @@ void rainbow(uint8_t wait) {
 * This method will cycle all the pixels simultaneously
 * through all the colors of DevMolasses Wheel
 */
+//void fullStripRainbow(uint8_t wait) {
+//  for (int hue = 0; hue < 360; hue++) {
+//    colorChange(strip.Wheel(hue, 1, 1));
+//    delay(wait);
+//  }
+//}
+
 void fullStripRainbow(uint8_t wait) {
-  for (int hue = 0; hue < 360; hue++) {
-    for (int i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, strip.Wheel(hue, 1, 1));
-    }
-    strip.show();
-    delay(wait);
+  if (millis() - displayTimer > displayTimerLength) {
+    if (index >= 360) index = 0;
+    colorChange(strip.Wheel(index, 1, 1));
+    index++;
   }
+}
+
+void policeEffect() {
+  
 }
 

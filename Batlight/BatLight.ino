@@ -20,6 +20,9 @@ DevMolasses_NeoPixel strip = DevMolasses_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GR
 bool oldState1 = HIGH;
 bool oldState2 = HIGH;
 int showType = 0;
+unsigned long displayTimer;
+unsigned long displayTimerLength;
+uint16_t index = 0;
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
