@@ -8,17 +8,14 @@
  * On a high -> low transition, the button press logic will
  * execute
  */
-#define BUTTON1_PIN 2
-#define BUTTON2_PIN 3
+const int BUTTON1_PIN = 2;
+const int BUTTON2_PIN = 3;
 
-#define PIXEL_PIN 6
+const int PIXEL_PIN = 6;
 
-#define PIXEL_COUNT 60
+const int PIXEL_COUNT = 60;
 
 DevMolasses_NeoPixel strip = DevMolasses_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
-
-bool oldState1 = HIGH;
-bool oldState2 = HIGH;
 
 int caseNum = 200; //initially set to off
 
@@ -26,8 +23,17 @@ int caseNum = 200; //initially set to off
 //which allows the code execution to return to loop()
 //to query the buttons
 unsigned long displayTimer;
-unsigned long displayTimerLength;
 uint16_t index = 0;
+
+//Button timer variables
+unsigned long button1Timer;
+unsigned long button2Timer;
+bool oldState1 = HIGH;
+bool oldState2 = HIGH;
+
+//sleep timer
+unsigned long sleepTimer;
+const unsigned long sleepTimerLength = 3600000UL; //milliseconds
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -46,6 +52,7 @@ void loop() {
   //Get current button states
   bool newState1 = digitalRead(BUTTON1_PIN);
   bool newState2 = digitalRead(BUTTON2_PIN);
+  bool buttonPressed = false;
 
   //Check if both buttons are pressed
   if (newState1 == LOW && newState2 == LOW) {
@@ -56,6 +63,7 @@ void loop() {
     newState2 = digitalRead(BUTTON2_PIN);
     if (newState1 == LOW && newState2 == LOW) {
       caseNum=200;
+      buttonPressed = true;
     }
   }
   //Check if button 1 was pressed
@@ -68,6 +76,7 @@ void loop() {
       } else {
         caseNum++;
       }
+      buttonPressed = true;
     }
   }
   //Check if button 2 was pressed
@@ -80,7 +89,16 @@ void loop() {
       } else {
         caseNum++;
       }
+      buttonPressed = true;
     }
   }
+
+  //reset the sleep timer if a button is pressed.
+  if (buttonPressed) sleepTimer = millis();
+  
+  //turn off lights after one hour of inactivity
+  if (millis() - sleepTimer > sleepTimerLength) caseNum = 200;
+
+  //set the lights to the specified caseNum
   displayCase();
 }

@@ -14,9 +14,10 @@ void colorChange(uint32_t color) {
 //}
 
 void colorWipe(uint32_t color) {
-  if (millis() - displayTimer > displayTimerLength) {
-    if (index >= strip.numPixels()) index = 0;
-    strip.setPixelColor(index, color);
+  if (millis() - displayTimer > 50UL) {
+    displayTimer = millis(); //reset timer to start over
+    if (index >= strip.numPixels()) index = 0; //verify the index is in range
+    strip.setPixelColor(index, color); //change the pixel color
     strip.show();
     index++;
   }
@@ -46,8 +47,9 @@ void strobeLight(uint32_t color) {
 * Each pixel is 1 degree of the wheel from its neighboring pixel
 * Credit to Adafruit.com for the algorithm; edited by DevMolasses
 */
-void rainbow(uint8_t wait) {
-  if (millis() - displayTimer > displayTimerLength) {
+void rainbow() {
+  if (millis() - displayTimer > 50UL) {
+    displayTimer = millis();
     if (index >= 360) index = 0;
     for (uint16_t i = 0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, strip.Wheel(((i + index) % 360), 1, 1));
@@ -67,8 +69,9 @@ void rainbow(uint8_t wait) {
 //  }
 //}
 
-void fullStripRainbow(uint8_t wait) {
-  if (millis() - displayTimer > displayTimerLength) {
+void fullStripRainbow() {
+  if (millis() - displayTimer > 50UL) {
+    displayTimer = millis();
     if (index >= 360) index = 0;
     colorChange(strip.Wheel(index, 1, 1));
     index++;
