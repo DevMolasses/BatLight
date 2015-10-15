@@ -8,8 +8,8 @@
  * On a high -> low transition, the button press logic will
  * execute
  */
-const int BUTTON1_PIN = 2;
-const int BUTTON2_PIN = 3;
+const int BUTTON1_PIN = 3;
+const int BUTTON2_PIN = 4;
 
 const int PIXEL_PIN = 6;
 
@@ -26,10 +26,14 @@ unsigned long displayTimer;
 uint16_t index = 0;
 
 //Button timer variables
-unsigned long button1Timer;
-unsigned long button2Timer;
+unsigned long buttonTimer1;
+unsigned long buttonTimer2;
+unsigned long dualButtonTimer;
 bool oldState1 = HIGH;
 bool oldState2 = HIGH;
+bool buttonPressed1 = false;
+bool buttonPressed2 = false;
+bool dualButtonPressed = false;
 
 //sleep timer
 unsigned long sleepTimer;
@@ -54,45 +58,99 @@ void loop() {
   bool newState2 = digitalRead(BUTTON2_PIN);
   bool buttonPressed = false;
 
-  //Check if both buttons are pressed
-  if (newState1 == LOW && newState2 == LOW) {
-    //short delay to debounce buttons
-    delay(20);
-    //check that both button are still pressed
-    newState1 = digitalRead(BUTTON1_PIN);
-    newState2 = digitalRead(BUTTON2_PIN);
-    if (newState1 == LOW && newState2 == LOW) {
-      caseNum=200;
-      buttonPressed = true;
-    }
+//------------ Start of Button 1 -------------
+  if (newState1 == LOW && oldState1 == HIGH) {
+    buttonTimer1 = millis();
+    buttonPressed1 = true;
   }
-  //Check if button 1 was pressed
-  else if (newState1 == LOW && oldState1 == HIGH) {
-    delay(20);//Debounce
-    newState1 = digitalRead(BUTTON1_PIN);
-    if (newState1 == LOW) {
-      if (caseNum >= 3) {
+
+  if (newState1 == LOW && oldState1 == LOW && buttonPressed1 && 
+      millis() - buttonTimer1 > 20UL && !buttonPressed2) {
+    if (caseNum >= 3) {
         caseNum = 0;
       } else {
         caseNum++;
       }
       buttonPressed = true;
-    }
+      buttonPressed1 = false;
   }
-  //Check if button 2 was pressed
-  else if (newState2 == LOW && oldState2 == HIGH) {
-    delay(20);//Debounce
-    newState2 = digitalRead(BUTTON2_PIN);
-    if (newState2 == LOW) {
-      if (caseNum < 100 || caseNum >= 107) {
+//------------- End of Button 1 --------------
+
+
+//  //Check if button 1 was pressed
+//  else if (newState1 == LOW && oldState1 == HIGH) {
+//    delay(20);//Debounce
+//    newState1 = digitalRead(BUTTON1_PIN);
+//    if (newState1 == LOW) {
+//      if (caseNum >= 3) {
+//        caseNum = 0;
+//      } else {
+//        caseNum++;
+//      }
+//      buttonPressed = true;
+//    }
+//  }
+
+//------------ Start of Button 2 -------------
+  if (newState2 == LOW && oldState2 == HIGH) {
+    buttonTimer2 = millis();
+    buttonPressed1 = true;
+  }
+
+  if (newState2 == LOW && oldState2 == LOW && buttonPressed2 && 
+      millis() - buttonTimer2 > 20UL && !buttonPressed1) {
+    if (caseNum < 100 || caseNum >= 107) {
         caseNum = 100;
       } else {
         caseNum++;
       }
       buttonPressed = true;
-    }
+      buttonPressed2 = false;
+  }
+//------------- End of Button 2 --------------
+
+//  //Check if button 2 was pressed
+//  else if (newState2 == LOW && oldState2 == HIGH) {
+//    delay(20);//Debounce
+//    newState2 = digitalRead(BUTTON2_PIN);
+//    if (newState2 == LOW) {
+//      if (caseNum < 100 || caseNum >= 107) {
+//        caseNum = 100;
+//      } else {
+//        caseNum++;
+//      }
+//      buttonPressed = true;
+//    }
+//  }
+
+//----------- Start of dual buttons ----------
+  if (newState1 == LOW && newState2 == LOW && 
+      (oldState1 == HIGH || oldState2 == HIGH)) {
+    dualButtonTimer = millis();
+    dualButtonPressed = true;
   }
 
+  if (newState1 == LOW && newState2 == LOW &&
+      oldState1 == LOW && oldState2 == LOW &&
+      dualButtonPressed && millis() - dualButtonTimer > 2000UL) {
+    caseNum=200;
+  }
+//------------ End of dual buttons -----------
+
+//  //Check if both buttons are pressed
+//  if (newState1 == LOW && newState2 == LOW) {
+//    //short delay to debounce buttons
+//    delay(20);
+//    //check that both button are still pressed
+//    newState1 = digitalRead(BUTTON1_PIN);
+//    newState2 = digitalRead(BUTTON2_PIN);
+//    if (newState1 == LOW && newState2 == LOW) {
+//      caseNum=200;
+//      buttonPressed = true;
+//    }
+//  }
+
+  
   //reset the sleep timer if a button is pressed.
   if (buttonPressed) sleepTimer = millis();
   
