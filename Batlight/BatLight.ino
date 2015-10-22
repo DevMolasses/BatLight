@@ -18,6 +18,7 @@ const int PIXEL_COUNT = 60;
 DevMolasses_NeoPixel strip = DevMolasses_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 int caseNum = 200; //initially set to off
+byte policeEffectNum = random(0,6);
 
 //Thees variables are used for using the timer
 //which allows the code execution to return to loop()
@@ -99,7 +100,7 @@ void loop() {
 
   if (newState2 == LOW && oldState2 == LOW && buttonPressed2 && 
       millis() - buttonTimer2 > 20UL && !buttonPressed1) {
-    if (caseNum < 100 || caseNum >= 107) {
+    if (caseNum < 100 || caseNum >= 108) {
         caseNum = 100;
       } else {
         caseNum++;

@@ -30,6 +30,8 @@ void displayCase() {
               break;
     case 107: rainbow();
               break;
+    case 108: policeEffect();
+              break;
   }
 }
 
