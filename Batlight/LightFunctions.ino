@@ -79,6 +79,21 @@ void fullStripRainbow() {
 }
 
 void policeEffect() {
+  //Divide the lights into 4 sections
+      //2 Red and 2 Blue
+
+  //Have several different flashing options
+
+  //All Red Then All Blue, back and forth
+
+  //Double Red then Double Blue
+
+  //Half Red & Blue then other Half of both
+
+  //Half Red & Blue then other Half of both double flash
+
+  //Red and Blue 'Theater Lights'
+
   
 }
 
