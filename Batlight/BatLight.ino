@@ -18,7 +18,7 @@ const int PIXEL_COUNT = 60;
 DevMolasses_NeoPixel strip = DevMolasses_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 int caseNum = 200; //initially set to off
-byte policeEffectNum = random(0,6);
+byte policeEffectNum = random(0,5);
 
 //Thees variables are used for using the timer
 //which allows the code execution to return to loop()
