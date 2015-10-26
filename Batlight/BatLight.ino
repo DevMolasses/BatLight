@@ -1,4 +1,4 @@
-#include <DevMolasses_NeoPixel.h>
+#include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
 #include <avr/power.h>
 #endif
@@ -15,7 +15,7 @@ const int PIXEL_PIN = 6;
 
 const int PIXEL_COUNT = 60;
 
-DevMolasses_NeoPixel strip = DevMolasses_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 int caseNum = 200; //initially set to off
 byte policeEffectNum = random(0,5);
@@ -40,6 +40,21 @@ bool dualButtonPressed = false;
 unsigned long sleepTimer;
 const unsigned long sleepTimerLength = 3600000UL; //milliseconds
 
+//Color constants
+  //Calculated with RGB = R*256*256 + G*256 + B
+  const uint32_t FULL_WHITE = 16777215; //R 255, G 255, B 255
+  const uint32_t Q3_WHITE = 12566463; //R 191, G 191, B 191
+  const uint32_t Q2_WHITE = 8355711; //R 127, G 127, B 127
+  const uint32_t Q1_WHITE = 4144959; //R 63, G 63, B 63
+  const uint32_t OFF = 0; //R 0, G 0, B 0
+  const uint32_t RED = 16711680; //R 255, G 0, B 0
+  const uint32_t ORANGE = 16744192; //R 255, G 123, B 0
+  const uint32_t YELLOW = 16776960; //R 255, G 255, B 0
+  const uint32_t GREEN = 65280; //R 0, G 255, B 0
+  const uint32_t TEAL = 65535; //R 0, G 255, B 255
+  const uint32_t BLUE = 255; //R 0, G 0, B 255
+  const uint32_t PURPLE = 8323327; //R 123, G 0, B 255
+  
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
 #if defined (__AVR_ATtiny85__)

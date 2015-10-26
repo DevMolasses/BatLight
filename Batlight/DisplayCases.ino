@@ -4,27 +4,27 @@ void displayCase() {
   //ButtonB uses 100-199
 
   switch(caseNum){
-    case 200: colorChange(strip.OFF);
+    case 200: colorChange(OFF);
               break;
     case 0:   readingLight();
               break;
     case 1:   nightLight();
               break;
-    case 2:   colorChange(strip.Q2_WHITE);
+    case 2:   colorChange(Q2_WHITE);
               break;
-    case 3:   colorChange(strip.Q3_WHITE);
+    case 3:   colorChange(Q3_WHITE);
               break;
-    case 100: colorWipe(strip.RED);
+    case 100: colorWipe(RED);
               break;
-    case 101: colorWipe(strip.ORANGE);
+    case 101: colorWipe(ORANGE);
               break;
-    case 102: colorWipe(strip.YELLOW);
+    case 102: colorWipe(YELLOW);
               break;
-    case 103: colorWipe(strip.GREEN);
+    case 103: colorWipe(GREEN);
               break;
-    case 104: colorWipe(strip.BLUE);
+    case 104: colorWipe(BLUE);
               break;
-    case 105: colorWipe(strip.PURPLE);
+    case 105: colorWipe(PURPLE);
               break;
     case 106: fullStripRainbow();
               break;

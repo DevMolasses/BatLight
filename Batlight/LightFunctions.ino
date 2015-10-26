@@ -24,11 +24,11 @@ void colorWipe(uint32_t color) {
 }
 
 void nightLight() {
-  colorChange(strip.Q1_WHITE);
+  colorChange(Q1_WHITE);
 }
 
 void readingLight() {
-  colorChange(strip.FULL_WHITE);
+  colorChange(FULL_WHITE);
 }
 
 void strobeLight(uint32_t color) {
@@ -37,7 +37,7 @@ void strobeLight(uint32_t color) {
     colorChange(color);
   } else if (millis() - displayTimer > 100UL)
   {
-    colorChange(strip.OFF);
+    colorChange(OFF);
     displayTimer = millis();
   }
 }
@@ -52,7 +52,7 @@ void rainbow() {
     displayTimer = millis();
     if (index >= 360) index = 0;
     for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, strip.Wheel(((i + index) % 360), 1, 1));
+      strip.setPixelColor(i, Wheel(((i + index) % 360), 1, 1));
     }
     strip.show();
   }
@@ -64,7 +64,7 @@ void rainbow() {
 */
 //void fullStripRainbow(uint8_t wait) {
 //  for (int hue = 0; hue < 360; hue++) {
-//    colorChange(strip.Wheel(hue, 1, 1));
+//    colorChange(Wheel(hue, 1, 1));
 //    delay(wait);
 //  }
 //}
@@ -73,7 +73,7 @@ void fullStripRainbow() {
   if (millis() - displayTimer > 50UL) {
     displayTimer = millis();
     if (index >= 360) index = 0;
-    colorChange(strip.Wheel(index, 1, 1));
+    colorChange(Wheel(index, 1, 1));
     index++;
   }
 }
@@ -192,9 +192,9 @@ void changeAllSections(byte r1, byte r2, byte b1, byte b2) {
 void changeSection(uint16_t section[], byte state) {
   uint32_t color;
   if (state = 0) {
-    color = strip.OFF;
+    color = OFF;
   } else if (state = 1) {
-    color = strip.RED;
+    color = RED;
   } else return;
   for (int i = 0; i < sizeof(section) - 1; i++) {
     strip.setPixelColor(i, color);
@@ -230,15 +230,15 @@ void policeChase(byte p) {
   //Loop through both colors and set pixels
   for (i = 0; i < numRed1 + numRed2; i++) {
     if (i % 3 == p)
-      strip.setPixelColor(red[i], strip.RED);
+      strip.setPixelColor(red[i], RED);
     else
-      strip.setPixelColor(red[i], strip.OFF);
+      strip.setPixelColor(red[i], OFF);
   }
   for (i = 0; i < numBlue1 + numBlue2; i++) {
     if (i % 3 == p)
-      strip.setPixelColor(blue[i], strip.BLUE);
+      strip.setPixelColor(blue[i], BLUE);
     else
-      strip.setPixelColor(blue[i], strip.OFF);
+      strip.setPixelColor(blue[i], OFF);
   }
 }
 
