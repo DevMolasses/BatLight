@@ -56,6 +56,7 @@ const unsigned long sleepTimerLength = 3600000UL; //milliseconds
   const uint32_t PURPLE = 8323327; //R 123, G 0, B 255
   
 void setup() {
+  Serial.begin(9600);
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
 #if defined (__AVR_ATtiny85__)
   if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
@@ -79,7 +80,7 @@ void loop() {
     buttonTimer1 = millis();
     buttonPressed1 = true;
   }
-
+  
   if (newState1 == LOW && oldState1 == LOW && buttonPressed1 && 
       millis() - buttonTimer1 > 20UL && !buttonPressed2) {
     if (caseNum >= 3) {
@@ -110,7 +111,7 @@ void loop() {
 //------------ Start of Button 2 -------------
   if (newState2 == LOW && oldState2 == HIGH) {
     buttonTimer2 = millis();
-    buttonPressed1 = true;
+    buttonPressed2 = true;
   }
 
   if (newState2 == LOW && oldState2 == LOW && buttonPressed2 && 
@@ -172,7 +173,9 @@ void loop() {
   
   //turn off lights after one hour of inactivity
   if (millis() - sleepTimer > sleepTimerLength) caseNum = 200;
-
+  
+  oldState1 = newState1;
+  oldState2 = newState2;
   //set the lights to the specified caseNum
   displayCase();
 }

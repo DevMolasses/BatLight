@@ -5,14 +5,6 @@ void colorChange(uint32_t color) {
   strip.show();
 }
 
-//void colorWipe(uint32_t color, uint8_t wait) {
-//  for (uint16_t i = 0; i < strip.numPixels(); i++) {
-//    strip.setPixelColor(i, color);
-//    strip.show();
-//    delay(wait);
-//  }
-//}
-
 void colorWipe(uint32_t color) {
   if (millis() - displayTimer > 50UL) {
     displayTimer = millis(); //reset timer to start over
@@ -55,6 +47,7 @@ void rainbow() {
       strip.setPixelColor(i, Wheel(((i + index) % 360), 1, 1));
     }
     strip.show();
+    index++;
   }
 }
 
@@ -62,13 +55,6 @@ void rainbow() {
 * This method will cycle all the pixels simultaneously
 * through all the colors of DevMolasses Wheel
 */
-//void fullStripRainbow(uint8_t wait) {
-//  for (int hue = 0; hue < 360; hue++) {
-//    colorChange(Wheel(hue, 1, 1));
-//    delay(wait);
-//  }
-//}
-
 void fullStripRainbow() {
   if (millis() - displayTimer > 50UL) {
     displayTimer = millis();
@@ -90,8 +76,8 @@ void policeEffect() {
     displayTimer = millis();
     policeEffectNum = random(0, 5);
   }
+  
   switch (policeEffectNum) {
-
     //All Red Then All Blue, back and forth
     case 0:
       curLoopTime = (millis() - displayTimer) % 1000;
@@ -173,31 +159,28 @@ void policeEffect() {
 }
 
 //Define the sections
-uint16_t red1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+uint16_t red1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 const byte numRed1 = sizeof(red1) / sizeof(uint16_t);
-uint16_t red2[] = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+uint16_t red2[] = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
 const byte numRed2 = sizeof(red2) / sizeof(uint16_t);
-uint16_t blue1[] = {31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45};
+uint16_t blue1[] = {30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
 const byte numBlue1 = sizeof(blue1) / sizeof(uint16_t);
-uint16_t blue2[] = {46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60};
+uint16_t blue2[] = {45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
 const byte numBlue2 = sizeof(blue2) / sizeof(uint16_t);
 
 void changeAllSections(byte r1, byte r2, byte b1, byte b2) {
-  changeSection(red1, r1);
-  changeSection(red2, r2);
-  changeSection(blue1, b1);
-  changeSection(blue2, b2);
+  changeSection(red1, numRed1, r1, RED);
+  changeSection(red2, numRed2, r2, RED);
+  changeSection(blue1, numBlue1, b1, BLUE);
+  changeSection(blue2, numBlue2, b2, BLUE);
 }
 
-void changeSection(uint16_t section[], byte state) {
-  uint32_t color;
-  if (state = 0) {
-    color = OFF;
-  } else if (state = 1) {
-    color = RED;
-  } else return;
-  for (int i = 0; i < sizeof(section) - 1; i++) {
-    strip.setPixelColor(i, color);
+void changeSection(uint16_t section[], byte numSection, byte state, uint32_t c) {
+  uint32_t color=OFF;
+  if (state == 1)
+    color = c;
+  for (int i = 0; i < numSection; i++) {
+    strip.setPixelColor(section[i], color);
   }
 }
 
