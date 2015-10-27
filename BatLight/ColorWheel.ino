@@ -79,3 +79,8 @@ uint32_t Wheel(byte WheelPos) {
    return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
   }
 }
+
+uint32_t RandomColor() {
+  return Wheel(random(0,360),1,1);
+}
+

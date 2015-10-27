@@ -18,7 +18,7 @@ const int PIXEL_COUNT = 60;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 int caseNum = 200; //initially set to off
-byte policeEffectNum = random(0,5);
+byte policeEffectNum = 0;
 
 //Thees variables are used for using the timer
 //which allows the code execution to return to loop()
@@ -40,7 +40,7 @@ bool dualButtonPressed = false;
 unsigned long sleepTimer;
 const unsigned long sleepTimerLength = 3600000UL; //milliseconds
 
-//Color constants
+  //Color constants
   //Calculated with RGB = R*256*256 + G*256 + B
   const uint32_t FULL_WHITE = 16777215; //R 255, G 255, B 255
   const uint32_t Q3_WHITE = 12566463; //R 191, G 191, B 191
@@ -54,15 +54,17 @@ const unsigned long sleepTimerLength = 3600000UL; //milliseconds
   const uint32_t TEAL = 65535; //R 0, G 255, B 255
   const uint32_t BLUE = 255; //R 0, G 0, B 255
   const uint32_t PURPLE = 8323327; //R 123, G 0, B 255
+  uint32_t colorStorage = RandomColor();
   
 void setup() {
-  Serial.begin(9600);
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
 #if defined (__AVR_ATtiny85__)
   if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
 #endif
   // End of trinket special code
 
+  randomSeed(analogRead(0));
+  
   pinMode(BUTTON1_PIN, INPUT_PULLUP);
   pinMode(BUTTON2_PIN, INPUT_PULLUP);
   strip.begin();
@@ -83,7 +85,7 @@ void loop() {
   
   if (newState1 == LOW && oldState1 == LOW && buttonPressed1 && 
       millis() - buttonTimer1 > 20UL && !buttonPressed2) {
-    if (caseNum >= 3) {
+    if (caseNum >= 10) {
         caseNum = 0;
       } else {
         caseNum++;
@@ -93,21 +95,6 @@ void loop() {
   }
 //------------- End of Button 1 --------------
 
-
-//  //Check if button 1 was pressed
-//  else if (newState1 == LOW && oldState1 == HIGH) {
-//    delay(20);//Debounce
-//    newState1 = digitalRead(BUTTON1_PIN);
-//    if (newState1 == LOW) {
-//      if (caseNum >= 3) {
-//        caseNum = 0;
-//      } else {
-//        caseNum++;
-//      }
-//      buttonPressed = true;
-//    }
-//  }
-
 //------------ Start of Button 2 -------------
   if (newState2 == LOW && oldState2 == HIGH) {
     buttonTimer2 = millis();
@@ -116,7 +103,7 @@ void loop() {
 
   if (newState2 == LOW && oldState2 == LOW && buttonPressed2 && 
       millis() - buttonTimer2 > 20UL && !buttonPressed1) {
-    if (caseNum < 100 || caseNum >= 108) {
+    if (caseNum < 100 || caseNum >= 109) {
         caseNum = 100;
       } else {
         caseNum++;
@@ -125,20 +112,6 @@ void loop() {
       buttonPressed2 = false;
   }
 //------------- End of Button 2 --------------
-
-//  //Check if button 2 was pressed
-//  else if (newState2 == LOW && oldState2 == HIGH) {
-//    delay(20);//Debounce
-//    newState2 = digitalRead(BUTTON2_PIN);
-//    if (newState2 == LOW) {
-//      if (caseNum < 100 || caseNum >= 107) {
-//        caseNum = 100;
-//      } else {
-//        caseNum++;
-//      }
-//      buttonPressed = true;
-//    }
-//  }
 
 //----------- Start of dual buttons ----------
   if (newState1 == LOW && newState2 == LOW && 
@@ -153,29 +126,17 @@ void loop() {
     caseNum=200;
   }
 //------------ End of dual buttons -----------
-
-//  //Check if both buttons are pressed
-//  if (newState1 == LOW && newState2 == LOW) {
-//    //short delay to debounce buttons
-//    delay(20);
-//    //check that both button are still pressed
-//    newState1 = digitalRead(BUTTON1_PIN);
-//    newState2 = digitalRead(BUTTON2_PIN);
-//    if (newState1 == LOW && newState2 == LOW) {
-//      caseNum=200;
-//      buttonPressed = true;
-//    }
-//  }
-
   
   //reset the sleep timer if a button is pressed.
   if (buttonPressed) sleepTimer = millis();
   
   //turn off lights after one hour of inactivity
   if (millis() - sleepTimer > sleepTimerLength) caseNum = 200;
-  
+
+  //Set the oldState for Both buttons
   oldState1 = newState1;
   oldState2 = newState2;
+  
   //set the lights to the specified caseNum
   displayCase();
 }
