@@ -62,7 +62,6 @@ void setup() {
   if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
 #endif
   // End of trinket special code
-
   randomSeed(analogRead(0));
   
   pinMode(BUTTON1_PIN, INPUT_PULLUP);
@@ -85,7 +84,7 @@ void loop() {
   
   if (newState1 == LOW && oldState1 == LOW && buttonPressed1 && 
       millis() - buttonTimer1 > 20UL && !buttonPressed2) {
-    if (caseNum >= 10) {
+    if (caseNum >= 9) {
         caseNum = 0;
       } else {
         caseNum++;
@@ -103,7 +102,7 @@ void loop() {
 
   if (newState2 == LOW && oldState2 == LOW && buttonPressed2 && 
       millis() - buttonTimer2 > 20UL && !buttonPressed1) {
-    if (caseNum < 100 || caseNum >= 109) {
+    if (caseNum < 100 || caseNum >= 108) {
         caseNum = 100;
       } else {
         caseNum++;

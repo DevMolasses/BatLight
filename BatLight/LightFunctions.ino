@@ -86,7 +86,7 @@ void fullStripRainbow() {
 }
 
 void pixelScrolling() {
-  if (millis() - displayTimer > 10UL) {
+  if (millis() - displayTimer > 30UL) {
     displayTimer = millis();
     if (index >= strip.numPixels()) {
       index = 0;
@@ -95,11 +95,13 @@ void pixelScrolling() {
     colorChange(OFF);
     strip.setPixelColor(index, colorStorage);
     strip.show();
+    index++;
   }
 }
 
 void theaterChaseWhite() {
   if (millis() - displayTimer > 100UL) {
+    displayTimer = millis();
     if (index >= 3) index = 0;
     for (uint16_t  i = 0; i < strip.numPixels(); i++) {
       if (i % 3 == index)
@@ -114,6 +116,7 @@ void theaterChaseWhite() {
 
 void theaterChaseRainbow() {
   if (millis() - displayTimer > 100UL) {
+    displayTimer = millis();
     if (index >= 360) index = 0;
     for (uint16_t i = 0; i < strip.numPixels(); i++) {
       if (i % 3 == index % 3)
