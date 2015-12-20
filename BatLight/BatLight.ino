@@ -8,6 +8,17 @@
  * On a high -> low transition, the button press logic will
  * execute
  */
+
+ //Pin Assignment
+ //Button 1 - Pin 3 Solid colors
+ //Button 2 - Pin 4 Motion effects
+ //Pixel data out - Pin 6
+ //Ground - pin G
+ //+5V in - Pin BAT
+ //Resistor on pixeld data line
+ //Capacitor between Vin and Ground
+ //Buttons between button pins and ground
+ 
 const int BUTTON1_PIN = 3;
 const int BUTTON2_PIN = 4;
 
@@ -71,6 +82,12 @@ void setup() {
 }
 
 void loop() {
+  // Reset timers if millis() rolls over to 0
+  if(buttonTimer1>millis())buttonTimer1=millis();
+  if(buttonTimer2>millis())buttonTimer2=millis();
+  if(dualButtonTimer>millis())dualButtonTimer=millis();
+  if(sleepTimer>millis())sleepTimer=millis();
+  
   //Get current button states
   bool newState1 = digitalRead(BUTTON1_PIN);
   bool newState2 = digitalRead(BUTTON2_PIN);
