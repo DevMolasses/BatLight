@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 //Randomly cycles through various police effects.  Changes every 30 seconds.
 
 //Define the 4 sections of lights

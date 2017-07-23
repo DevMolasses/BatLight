@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 //DevMolasses Wheel
 /*Convert a given HSV (Hue Saturation Value) to RGB(Red Green Blue) and set the led to the color
 *  h is hue value, integer between 0 and 360

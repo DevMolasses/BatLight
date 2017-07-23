@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 void colorChange(uint32_t color) {
   for (uint16_t i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, color);

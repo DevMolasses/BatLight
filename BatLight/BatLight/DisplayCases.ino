@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 void displayCase() {
   //Off = 200
   //ButtonA uses 0 - 99
